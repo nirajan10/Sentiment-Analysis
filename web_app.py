@@ -43,4 +43,4 @@ def predict():
         return render_template('sentiment_analysis.html', pred='Negative', review=review)
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(host="0.0.0.0", port=int("3000"), debug=True)
