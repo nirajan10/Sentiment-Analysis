@@ -1,0 +1,10 @@
+flask=2.2.2=py37haa95532_0
+pandas=1.2.4=py37hf11a4ad_0
+numpy-base=1.16.6=py37hc3f5095_0
+beautifulsoup4=4.11.1=py37haa95532_0
+nltk=3.7=pyhd3eb1b0_0
+scikit-learn=1.0.2=py37hf11a4ad_1
+matplotlib=3.4.3=py37haa95532_0
+seaborn=0.11.2=pyhd3eb1b0_0
+pytorch=1.13.1=py3.7_cuda11.7_cudnn8_0
+torchtext
