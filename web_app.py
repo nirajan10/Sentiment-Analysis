@@ -3,7 +3,8 @@ import pandas as pd
 import numpy as np
 from bs4 import BeautifulSoup
 import re, pickle
-from nltk.corpus import stopwords
+import nltk
+from nltk.corpus import stopwords, wordnet
 from nltk.stem import WordNetLemmatizer
 from sklearn.feature_extraction.text import TfidfVectorizer
 
@@ -11,6 +12,19 @@ app = Flask(__name__)
 
 model = pickle.load(open('./model/final_LR.pkl', 'rb'))
 tfidf = pickle.load(open('./model/tfidf.pkl', 'rb'))
+
+def get_wordnet_pos(treebank_tag):
+
+    if treebank_tag.startswith('J'):
+        return wordnet.ADJ
+    elif treebank_tag.startswith('V'):
+        return wordnet.VERB
+    elif treebank_tag.startswith('N'):
+        return wordnet.NOUN
+    elif treebank_tag.startswith('R'):
+        return wordnet.ADV
+    else:
+        return wordnet.NOUN
 
 @app.route('/')
 def home():
@@ -28,8 +42,9 @@ def predict():
     review = review.lower()
     review = review.split()
     review = [word for word in review if not word in set(stopwords.words('english'))]
-    lem = WordNetLemmatizer()
-    review = [lem.lemmatize(word) for word in review]
+    lemmatizer = WordNetLemmatizer()
+    words_and_tags = nltk.pos_tag(review)
+    review = [lemmatizer.lemmatize(word, pos=get_wordnet_pos(tag)) for word, tag in words_and_tags]
     review = ' '.join(review)
     corpus.append(review)
     review_tf_idf = tfidf.transform(corpus)
